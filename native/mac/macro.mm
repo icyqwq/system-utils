@@ -48,6 +48,7 @@ static CFRunLoopSourceRef g_runloop_source = nullptr;
 static std::thread g_record_thread;
 static std::thread g_play_thread;
 static Napi::ThreadSafeFunction g_status_callback;
+static std::atomic<bool> g_status_callback_registered{false};
 
 // 当前状态
 static std::map<CGKeyCode, bool> g_current_keys;
@@ -88,7 +89,7 @@ struct StatusCallbackData {
 };
 
 void triggerStatusCallback(const std::string& status, const std::string& macro_id, MacroEvent* evt = nullptr, const std::string& key_name = "") {
-    if (!g_status_callback) {
+    if (!g_status_callback_registered.load()) {
         if (evt) delete evt;
         return;
     }
@@ -430,8 +431,9 @@ Napi::Value SetMacroStatusCallback(const Napi::CallbackInfo& info) {
     Napi::Function callback = info[0].As<Napi::Function>();
     
     // 释放旧的回调
-    if (g_status_callback) {
+    if (g_status_callback_registered.load()) {
         g_status_callback.Release();
+        g_status_callback_registered = false;
     }
     
     // 设置新的回调
@@ -442,6 +444,7 @@ Napi::Value SetMacroStatusCallback(const Napi::CallbackInfo& info) {
         0,
         1
     );
+    g_status_callback_registered = true;
     
     Napi::Object result = Napi::Object::New(env);
     result.Set("status", Napi::String::New(env, "callback set"));

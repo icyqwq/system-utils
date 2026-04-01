@@ -45,8 +45,6 @@ std::vector<uint8_t> NSImageToPNG(NSImage* image, int size) {
                 NSUInteger length = [pngData length];
                 result.assign(bytes, bytes + length);
             }
-            
-            [bitmap release];
         }
     }
     
@@ -70,7 +68,7 @@ NSImage* GetApplicationIcon(const std::string& appPath) {
         // 获取图标
         NSImage* icon = [[NSWorkspace sharedWorkspace] iconForFile:path];
         if (icon) {
-            return [icon retain];
+            return icon;
         }
     }
     
@@ -83,7 +81,7 @@ NSImage* GetFileIcon(const std::string& filePath) {
         NSString* path = [NSString stringWithUTF8String:filePath.c_str()];
         NSImage* icon = [[NSWorkspace sharedWorkspace] iconForFile:path];
         if (icon) {
-            return [icon retain];
+            return icon;
         }
     }
     
@@ -199,8 +197,6 @@ Napi::Value GetIcon(const Napi::CallbackInfo& info) {
                 } else {
                     icons[i] = env.Null();
                 }
-                
-                [icon release];
             } else {
                 icons[i] = env.Null();
             }

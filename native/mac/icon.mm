@@ -1,5 +1,5 @@
 #include "icon.h"
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 #include <vector>
 

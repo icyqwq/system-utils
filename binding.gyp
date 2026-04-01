@@ -49,20 +49,7 @@
             "GCC_ENABLE_CPP_EXCEPTIONS": "YES",
             "CLANG_CXX_LIBRARY": "libc++",
             "MACOSX_DEPLOYMENT_TARGET": "10.13",
-            "ARCHS": ["x86_64", "arm64"],
-            "CLANG_ENABLE_OBJC_ARC": "YES",
-            "OTHER_LDFLAGS": [
-              "-arch x86_64",
-              "-arch arm64",
-              "-framework CoreGraphics",
-              "-framework Carbon",
-              "-framework ApplicationServices",
-              "-framework CoreAudio",
-              "-framework AudioToolbox",
-              "-framework Cocoa",
-              "-framework AppKit",
-              "-framework Foundation"
-            ]
+            "CLANG_ENABLE_OBJC_ARC": "YES"
           },
           "cflags": [
             "-mmacosx-version-min=10.13"
